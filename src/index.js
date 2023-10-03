@@ -16,43 +16,34 @@ async function searchButtonClicked() {
   getWeatherData(searchInput.value)
     .then((weatherData) => {
       if (weatherData) {
-        let currentTempString = fahrenheit
-          ? weatherData.current.temp_f + " °F"
-          : weatherData.current.temp_c + " °C";
-        currentWeather.innerText =
-          "Current condition in " +
-          weatherData.location.name +
-          ", " +
-          weatherData.location.country +
-          ": " +
-          weatherData.current.condition.text +
-          " and " +
-          currentTempString;
+        const currentTempString = fahrenheit
+          ? `${weatherData.current.temp_f} °F`
+          : `${weatherData.current.temp_c} °C`;
+        currentWeather.innerText = `Current condition in ${weatherData.location.name}, ${weatherData.location.country}: ${weatherData.current.condition.text} and ${currentTempString}`;
         getWeatherGif(weatherData.current.condition.text);
         while (weatherResults.hasChildNodes()) {
           weatherResults.removeChild(weatherResults.lastChild);
         }
 
-        console.log(weatherData.forecast.forecastday);
         weatherData.forecast.forecastday.forEach((data) => {
           let minTemp = 0;
           if (fahrenheit) {
-            minTemp = data.day.mintemp_f + " °F";
+            minTemp = `${data.day.mintemp_f} °F`;
           } else {
-            minTemp = data.day.mintemp_c + " °C";
+            minTemp = `${data.day.mintemp_c} °C`;
           }
           let maxTemp = 0;
           if (fahrenheit) {
-            maxTemp = data.day.maxtemp_f + " °F";
+            maxTemp = `${data.day.maxtemp_f} °F`;
           } else {
-            maxTemp = data.day.maxtemp_c + " °C";
+            maxTemp = `${data.day.maxtemp_c} °C`;
           }
           weatherResults.appendChild(
             generateForecastDiv({
               date: data.date,
               condition: data.day.condition.text,
-              minTemp: minTemp,
-              maxTemp: maxTemp,
+              minTemp,
+              maxTemp,
             }),
           );
         });
@@ -71,12 +62,11 @@ async function getWeatherData(location) {
 
   if (response?.ok) {
     return generatePageElement(response.json());
-  } else {
-    while (weatherResults.hasChildNodes()) {
-      weatherResults.removeChild(weatherResults.lastChild);
-    }
-    appendElem(weatherResults, "p", "Please enter a location.");
   }
+  while (weatherResults.hasChildNodes()) {
+    weatherResults.removeChild(weatherResults.lastChild);
+  }
+  appendElem(weatherResults, "p", "Please enter a location.");
 }
 
 async function getWeatherGif(searchTerm) {
@@ -108,7 +98,7 @@ function appendElem(
   classIn = null,
   id = null,
 ) {
-  let childElem = document.createElement(`${type}`);
+  const childElem = document.createElement(`${type}`);
   id ? (childElem.id = id) : null;
   classIn ? childElem.classList.add(classIn) : null;
   innerText ? (childElem.innerText = innerText) : null;
@@ -117,13 +107,13 @@ function appendElem(
 }
 
 function generateForecastDiv(weatherData) {
-  let returnDiv = document.createElement("div");
+  const returnDiv = document.createElement("div");
   returnDiv.classList.add("forecast-card");
 
   appendElem(returnDiv, "h1", weatherData.date);
-  appendElem(returnDiv, "p", "Conditions: " + weatherData.condition);
-  appendElem(returnDiv, "p", "Min Temperature: " + weatherData.minTemp);
-  appendElem(returnDiv, "p", "Max Temperature: " + weatherData.maxTemp);
+  appendElem(returnDiv, "p", `Conditions: ${weatherData.condition}`);
+  appendElem(returnDiv, "p", `Min Temperature: ${weatherData.minTemp}`);
+  appendElem(returnDiv, "p", `Max Temperature: ${weatherData.maxTemp}`);
 
   return returnDiv;
 }

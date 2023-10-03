@@ -4,7 +4,8 @@
   "description": "Webpack, ESLint, and Prettier config",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setghpages": "git subtree push --prefix dist origin gh-pages"
   },
   "keywords": [],
   "author": "",
