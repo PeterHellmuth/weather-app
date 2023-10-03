@@ -3,10 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Weather</title>
     <script src="bundle.js" defer></script>
 </head>
 <body>
-    
+    <div class="input-section">
+        <label for="search-input">Your location: </label>
+        <input type="text" id="search-input">
+    </div>
+    <button id="search-button">Check Weather</button>
+    <div class="switch-container">
+        <label class="switch">
+            <input type="checkbox" id="toggle-checkbox" checked>
+            <span class="slider round"></span>
+         </label>
+         <span id="toggle-checkbox-label">Fahrenheit</span>
+    </div>
+    <span id="current-weather"></span>
+    <img src="">
+    <p>Weather Forecast: </p>
+    <div id="weather-results"></div>
 </body>
 </html>
