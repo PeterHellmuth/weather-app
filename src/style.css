@@ -14,7 +14,7 @@ body{
 
 img{
     width: auto;
-    height: 500px;
+    max-height: 50vh;
 }
 
 button, input{
