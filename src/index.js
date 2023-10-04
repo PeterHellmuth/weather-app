@@ -9,18 +9,26 @@ const toggleCheckbox = document.getElementById("toggle-checkbox");
 const toggleCheckboxLabel = document.getElementById("toggle-checkbox-label");
 toggleCheckbox.addEventListener("change", toggleChanged);
 let fahrenheit = true;
+let currentSearchLocation = "";
 
 searchButton.addEventListener("click", searchButtonClicked);
 
-async function searchButtonClicked() {
-  getWeatherData(searchInput.value)
+function searchButtonClicked() {
+  currentSearchLocation = searchInput.value;
+  searchForWeather(currentSearchLocation, true);
+}
+
+async function searchForWeather(location, updateGif) {
+  getWeatherData(location)
     .then((weatherData) => {
       if (weatherData) {
         const currentTempString = fahrenheit
           ? `${weatherData.current.temp_f} °F`
           : `${weatherData.current.temp_c} °C`;
         currentWeather.innerText = `Current condition in ${weatherData.location.name}, ${weatherData.location.country}: ${weatherData.current.condition.text} and ${currentTempString}`;
-        getWeatherGif(weatherData.current.condition.text);
+        if (updateGif) {
+          getWeatherGif(weatherData.current.condition.text);
+        }
         while (weatherResults.hasChildNodes()) {
           weatherResults.removeChild(weatherResults.lastChild);
         }
@@ -89,6 +97,7 @@ function toggleChanged() {
   } else {
     toggleCheckboxLabel.innerText = "Celsius";
   }
+  searchForWeather(currentSearchLocation, false);
 }
 
 function appendElem(
